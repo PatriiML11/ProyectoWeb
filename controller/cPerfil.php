@@ -1,0 +1,28 @@
+﻿<?php 
+/* 
+* CONTROLADOR DE PERFIL DE USUARIO.
+* REALIZA LAS ACCIONES DEL PERFIL DEL USUARIO.
+* 
+* @author PATRICIA MARTÍNEZ LUCENA
+* @version 1.0.0 
+*/ 
+if(isset($_SESSION['usuario'])){
+//INCLUIR LA CLASE BÚSQUEDA.
+require_once 'model/Busqueda.php';
+//INCLUIR LA VISTA GENERAL.
+include 'view/layout.php';
+//SI SE HA PULSADO EL BOTÓN DE EDITAR, REDIRIGE A LA PÁGINA DE EDITAR USUARIO.
+if(isset($_POST['editar'])){
+	header('Location:index.php?location=editarusuario');
+}
+}else{
+	header('Location:index.php?location=inicio');
+}
+?> 
+</div>
+	<footer>           
+		<p>Autor: Patricia Martínez</p>
+		<a href=""><div><img src="./webroot/css/images/github.png" width="50px"></div></a>
+	</footer> 
+
+</div>
