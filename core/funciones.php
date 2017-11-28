@@ -33,7 +33,18 @@
 		}
 		return $error;
 	}
-	
+	function validartextocoma($texto){
+		$patrontexto="/^[a-z A-ZàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇ,\/]+$/";
+		$error="";
+		if(empty(trim($texto))){ //Se genera error si el campo está vacío 
+			$error = "Campo vacío"; 
+		}else{
+			if(!preg_match($patrontexto, $texto)){
+				$error="Introduce solo caracteres de direcciones";
+			}
+		}
+		return $error;
+	}
 	function validartextolongitud($texto, $longitud){
 		$patrontexto="/^[a-zA-Z]{".$longitud."}+$/";
 		$error="";

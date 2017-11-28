@@ -1,0 +1,17 @@
+Pincho server:
+	$host='localhost';
+	$db='PML-Mapa';
+	$user = 'root'; 
+	$password = ''; 
+
+Pincho Patri:
+	$host='localhost';
+	$db='PML-Mapa';
+	$user = 'PML'; 
+	$password = 'paso'; 
+
+SERVIDOR CLASE:
+	$host='192.168.20.18';
+	$db='PROYECTO2-Mapa';
+	$user = 'PROYECTO2'; 
+	$password = 'paso'; 
