@@ -1,31 +1,31 @@
 		
 <?php 
-	
-	/*Librería de validación de funciones
-	* Autor: Patricia Martínez Lucena
-	* Fecha de última modificación: 22/11/17
-	*/
+	/* 
+	* LIBRERÍA DE VALIDACIÓN DE FUNCIONES.
+	* 
+	* @author PATRICIA MARTÍNEZ LUCENA
+	* @version 1.0.0
+	*/ 
+	//VALIDA CARACTERES ALFABÉTICOS CON ACENTOS Y PUEDE ESTAR VACÍO.
 	function validartextovacio($texto){
+		//DEFINIR EL PATRÓN.
 		$patrontexto="/^[a-z A-ZàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇ]+$/";
 		$error="";
+		//SI NO COINCIDE EL TEXTO CON EL PATRÓN ALMACENA EL ERROR.
 		if(!preg_match($patrontexto, $texto)){
 			$error="Introduce solo letras";
 		}
 		return $error;
 	}
-	function validarpasswordvacio($password){
-		$patronpassword="/^[a-zA-Z][a-zA-Z0-9_!@#$%^&*().]+$/";	
-		$error="";
-		if(!preg_match($patronpassword, $password)){
-			$error="Formato incorrecto";
-		}
-		return $error;
-	}
+	//VALIDA CARACTERES ALFABÉTICOS CON ACENTOS.
 	function validartexto($texto){
+		//DEFINIR EL PATRÓN.
 		$patrontexto="/^[a-z A-ZàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇ]+$/";
 		$error="";
-		if(empty(trim($texto))){ //Se genera error si el campo está vacío 
+		//SI EL CAMPO ESTÁ VACÍO ALMACENA EL ERROR.
+		if(empty(trim($texto))){
 			$error = "Campo vacío"; 
+		//SI NO COINCIDE EL TEXTO CON EL PATRÓN ALMACENA EL ERROR.
 		}else{
 			if(!preg_match($patrontexto, $texto)){
 				$error="Introduce solo letras";
@@ -33,66 +33,103 @@
 		}
 		return $error;
 	}
-	
-	function validartextolongitud($texto, $longitud){
-		$patrontexto="/^[a-zA-Z]{".$longitud."}+$/";
+	//VALIDA UNA DIRECCIÓN SIN NÚMEROS.
+	function validardireccion($direccion){
+		//DEFINIR EL PATRÓN.
+		$patrontexto="/^[a-z A-ZàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇ,\/]+$/";
 		$error="";
-		if(empty(trim($texto))){ //Se genera error si el campo está vacío 
+		//SI EL CAMPO ESTÁ VACÍO ALMACENA EL ERROR.
+		if(empty(trim($direccion))){
 			$error = "Campo vacío"; 
-		} else {	
-			if(!preg_match($patrontexto, $texto)){
-				$error="3 LETRAS únicamente";
+		//SI NO COINCIDE EL TEXTO CON EL PATRÓN ALMACENA EL ERROR.
+		}else{
+			if(!preg_match($patrontexto, $direccion)){
+				$error="Introduce solo caracteres de direcciones";
 			}
 		}
 		return $error;
 	}
-	
+	//VALIDA CARACTERES ALFABÉTICOS CON ACENTOS Y CON UNA LONGITUD DETERMINADA.
+	function validartextolongitud($texto, $longitud){
+		//DEFINIR EL PATRÓN.
+		$patrontexto="/^[a-zA-Z]{".$longitud."}+$/";
+		$error="";
+		//SI EL CAMPO ESTÁ VACÍO ALMACENA EL ERROR.
+		if(empty(trim($texto))){
+			$error = "Campo vacío"; 
+		//SI NO COINCIDE EL TEXTO CON EL PATRÓN ALMACENA EL ERROR.
+		} else {	
+			if(!preg_match($patrontexto, $texto)){
+				$error=$longitud." letras únicamente";
+			}
+		}
+		return $error;
+	}
+	//VALIDA CARACTERES ALFANUMÉRICOS.
 	function validartextonumero($textonumero){
+		//DEFINIR EL PATRÓN.
 		$patrontextonumero="/^[a-zA-Z0-9]+$/";	
 		$error="";
-		if (empty(trim($textonumero))) { //Se genera error si el campo está vacío 
+		//SI EL CAMPO ESTÁ VACÍO ALMACENA EL ERROR.
+		if (empty(trim($textonumero))) {
 			$error = "Campo vacío"; 
+		//SI NO COINCIDE EL TEXTO CON EL PATRÓN ALMACENA EL ERROR.
 		} else 	if(!preg_match($patrontextonumero, $textonumero)){
 			$error="Formato incorrecto";
 		}
 		return $error;
 	}
-	
+	//VALIDA NÚMEROS ENTEROS.
 	function validarentero($entero){
+		//DEFINIR EL PATRÓN.
 		$patronentero="/^[0-9]+$/";	
 		$error="";
-		if (empty(trim($entero))) { //Se genera error si el campo está vacío 
+		//SI EL CAMPO ESTÁ VACÍO ALMACENA EL ERROR.
+		if (empty(trim($entero))) {
 			$error = "Campo vacío"; 
+		//SI NO COINCIDE EL TEXTO CON EL PATRÓN ALMACENA EL ERROR.
 		} else 	if(!preg_match($patronentero, $entero)){
 			$error="Formato incorrecto";
-			
 		}
 		return $error;
 	}
-	
+	//VALIDA UN PASSWORD Y PUEDE ESTAR VACÍO.
+	function validarpasswordvacio($password){
+		//DEFINIR EL PATRÓN.
+		$patronpassword="/^[a-zA-Z][a-zA-Z0-9_!@#$%^&*().]+$/";	
+		$error="";
+		//SI NO COINCIDE EL TEXTO CON EL PATRÓN ALMACENA EL ERROR.
+		if(!preg_match($patronpassword, $password)){
+			$error="Formato incorrecto";
+		}
+		return $error;
+	}
+	//VALIDA UN PASSWORD.
 	function validarpassword($password){
+		//DEFINIR EL PATRÓN.
 		$patronpassword="/^[a-zA-Z]+$/";	
 		$error="";
-		if (empty(trim($password))) { //Se genera error si el campo está vacío 
+		//SI EL CAMPO ESTÁ VACÍO ALMACENA EL ERROR.
+		if (empty(trim($password))) {
 			$error = "Campo vacío"; 
+		//SI NO COINCIDE EL TEXTO CON EL PATRÓN ALMACENA EL ERROR.
 		} else 	if(!preg_match($patronpassword, $password)){
 			$error="Formato incorrecto";
 		}
 		return $error;
 	}
-
-		
-		
+	//VALIDAR UNA FECHA EN VARIOS FORMATOS.
 	function validarfecha($fecha){
-		//$patronfecha="/^((0[1-9]|[1-2][0-9]|3[0-1])(-)(0[1-9]|1[0-2])(-)([1800-2050]))|(([1800-2050])(-)(0[1-9]|1[0-2])(-)(0[1-9]|[1-2][0-9]|3[0-1]))|((0[1-9]|[1-2][0-9]|3[0-1])(\/)(0[1-9]|1[0-2])(\/)([1800-2050]))|(([1800-2050])(\/)(0[1-9]|1[0-2])(\/)(0[1-9]|[1-2][0-9]|3[0-1]))$/";
-		//$patronfecha="/^((0[1-9]|[1-2][0-9]|3[0-1])(\-)(0[1-9]|1[0-2])(\-)([0-9]{4}))|((0[1-9]|[1-2][0-9]|3[0-1])(\/)(0[1-9]|1[0-2])(\/)([0-9]{4}))$/";
+		//DEFINIR EL PATRÓN.
 		$patronfecha1="/^((0?[1-9]|[1-2][0-9]|3[0-1])(\-)(0?[1-9]|1[0-2])(\-)([0-9]{4}))$/";
 		$patronfecha2="/^((0?[1-9]|[1-2][0-9]|3[0-1])(\/)(0?[1-9]|1[0-2])(\/)([0-9]{4}))$/";
 		$patronfecha3="/^(([0-9]{4})(\/)(0?[1-9]|1[0-2])(\/)(0?[1-9]|[1-2][0-9]|3[0-1]))$/";
 		$patronfecha4="/^(([0-9]{4})(\-)(0?[1-9]|1[0-2])(\-)(0?[1-9]|[1-2][0-9]|3[0-1]))$/";
 		$error="";
-		if (empty(trim($fecha))) { //Se genera error si el campo está vacío 
+		//SI EL CAMPO ESTÁ VACÍO ALMACENA EL ERROR.
+		if (empty(trim($fecha))) {
 			$error = "Campo vacío"; 
+		//SI NO COINCIDE EL TEXTO CON EL PATRÓN ALMACENA EL ERROR.
 		} else 	if(!preg_match($patronfecha1, $fecha)){
 			if(!preg_match($patronfecha2, $fecha)){
 				if(!preg_match($patronfecha3, $fecha)){
@@ -101,39 +138,43 @@
 					}
 				}
 			}
-			
 		}
 		return $error;
 	}
-		
-		
+	//VALIDAR UNA HORA.	
 	function validarhora($hora){
+		//DEFINIR EL PATRÓN.
 		$patronhora="/^[0-2][0-3]:[0-5][0-9]$/";	
 		$error="";
+		//SI EL CAMPO ESTÁ VACÍO ALMACENA EL ERROR.
 		if (empty(trim($hora))) { //Se genera error si el campo está vacío 
 			$error = "Campo vacío"; 
+		//SI NO COINCIDE EL TEXTO CON EL PATRÓN ALMACENA EL ERROR.
 		} else 	if(!preg_match($patronhora, $hora)){
 			$error="Formato incorrecto";
 		}
 		return $error;
 	}	
-		
-
+	//VALIDA UN EMAIL.
 	function validaremail($email){
+		//DEFINIR EL PATRÓN.
 		$patronemail="/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/";	
 		$error="";
+		//SI EL CAMPO ESTÁ VACÍO ALMACENA EL ERROR.
 		if (empty(trim($email))) { //Se genera error si el campo está vacío 
 			$error = "Campo vacío"; 
+		//SI NO COINCIDE EL TEXTO CON EL PATRÓN ALMACENA EL ERROR.
 		} else 	if(!preg_match($patronemail, $email)){
 			$error="Formato de Email incorrecto";
 		}
 		return $error;
 	}					
-	
-
+	//VALIDA UN DECIMAL
 	function validardecimal($decimal){
+		//DEFINIR EL PATRÓN.
 		$patrondecimal="/^([0-9]+)(([.|,])([0-9]+))?$/";	
 		$error = ""; 
+		//SI EL CAMPO ESTÁ VACÍO ALMACENA EL ERROR.
 		if (empty(trim($decimal))) { //Se genera error si el campo está vacío 
 			$error = "Campo vacío"; 
 		} else 	if(!preg_match($patrondecimal, $decimal)){
@@ -141,14 +182,18 @@
 		}
 		return $error;
 	}			
-		
+	//VALIDA UN DNI.
 	function validardni($dni) { 
+		//DEFINIR LOS CARACTERES DEL DNI GENERALES.
+		$caracteresDNI = "TRWAGMYFPDXBNJZSQVHLCKE";
 		$error = ""; 
-		$caracteresDNI = "TRWAGMYFPDXBNJZSQVHLCKE"; //Cadena de caracteres que sirve para comprobar si se ha introducido bien la letra del DNI 
-		$patron = "/([0-9]{8})([a-zA-Z]{1})/"; //Patrón del DNI en España. 8 números + una letra. 
-		if (empty(trim($dni))) { //Se genera error si el campo está vacío 
+		//DEFINIR EL PATRÓN.
+		$patron = "/([0-9]{8})([a-zA-Z]{1})/";
+		//SI EL CAMPO ESTÁ VACÍO ALMACENA EL ERROR.
+		if (empty(trim($dni))) {
 			$error = "Campo vacío"; 
-		} else if (preg_match($patron, $dni)) { //Si el DNI coincide con el patrón, se comprueba que se haya introducido bien la letra 
+		//SI EL CAMPO ESTÁ VACÍO ALMACENA EL ERROR.
+		}else if (preg_match($patron, $dni)) {
 			$numerosDNI = $dni . substr($dni, 0, -1); 
 			$valor = ($numerosDNI % 23); 
 			$letraIntroducida = $dni[8]; 
@@ -160,7 +205,5 @@
 			$error = "Formato DNI incorrecto"; 
 		} 
 		return $error; 
-	} 
-				
-			
+	}	
 ?>

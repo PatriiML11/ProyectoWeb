@@ -1,27 +1,29 @@
 ﻿<?php 
 /* 
-* Vista Modificación de usuario.
-* Interface de la modificación de un usuario.
+* VISTA MODIFICACIÓN DE USUARIO.
+* INTERFACE DE LA MODIFICACIÓN DE UN USUARIO.
 * 
 * @author Patricia Martínez Lucena
 * @version 1.0.0
 */ 
-	 require_once 'model/Usuario.php';
-	//recuperar Codigo seleccionado en la página anterior.
-	$codUsuario=$_SESSION['usuario']->getCodUsuario();
-	//Almacenar en una variable el departamento recibido.
-	$usuario=Usuario::buscarUsuario($codUsuario);
-	//Almacenar en variables los distintos valores recibidos. 
-	$codUsuario=$usuario->getCodUsuario();
-	$nomUsuario=$usuario->getNomUsuario();
-	$email=$usuario->getEmail();
-	$password=$usuario->getPassword();
-	//Almacenar en una sesión el departamento a modificar.
-	$_SESSION['usuarioModific']=$usuario;
+//INCLUIR LA CLASE USUARIO.
+require_once 'model/Usuario.php';
+//RECUPERAR CODIGO SELECCIONADO EN LA PÁGINA ANTERIOR.
+$codUsuario=$_SESSION['usuario']->getCodUsuario();
+//ALMACENAR EN UNA VARIABLE EL DEPARTAMENTO RECIBIDO.
+$usuario=Usuario::buscarUsuario($codUsuario);
+//ALMACENAR EN VARIABLES LOS DISTINTOS VALORES RECIBIDOS. 
+$codUsuario=$usuario->getCodUsuario();
+$nomUsuario=$usuario->getNomUsuario();
+$email=$usuario->getEmail();
+$password=$usuario->getPassword();
+//ALMACENAR EN UNA SESIÓN EL DEPARTAMENTO A MODIFICAR.
+$_SESSION['usuarioModific']=$usuario;
 ?> 
 <div class="cabecera">
 	<h1>TRAYECTOS EN ESPAÑA</h1>
 	<?php
+		//SI SE HA INICIADO SESIÓN MUESTRA UNOS BOTONES. SI NO, MUESTRA OTROS.
 		if(isset($_SESSION['usuario'])){
 			print '<div class="botonesinicio"><a href="index.php?location=logoff"><input type="button" id="logoff" name="logoff" value="Cerrar Sesión"></a><a href="index.php?location=perfil"><input type="button" id="perfil" name="perfil" value="Ver Perfil"></a><a href="index.php?location=busqueda"><input type="button" id="busqueda" name="busqueda" value="Ver Historial"></a></div>';
 		}else{
@@ -35,7 +37,11 @@
 			<div class="titulo">
 				<h2>EDITAR USUARIO</h2>
 			</div>
-			<div>
+			<div id="contError">
+				<span id="error"><?php if(!empty($errores['codUsuario'])){echo $errores['codUsuario'];} ?></span>
+				<span id="errorcampos"></span>
+			</div>
+			<div id="div1">
 				<span class="error"><?php if(!empty($errores['codUsuario'])){echo $errores['codUsuario'];} ?></span> <br/>
 				<label>Usuario </label><br/>
 				<input type="text" name="codUsuario" value="<?php print $_SESSION['usuarioModific']->getCodUsuario(); 
@@ -58,8 +64,8 @@
 				<input type="password" name="passwordnuevo"/>
 			</div>	
 			<div>
-				<span class="error"><?php if(!empty($errores['email'])){echo $errores['email'];} ?></span> 
-				<label>Email <br/></label>
+				<span class="error"><?php if(!empty($errores['email'])){echo $errores['email'];} ?></span> <br/>
+				<label>Email </label><br/>
 				<input type="text" name="email" value="<?php print $_SESSION['usuarioModific']->getEmail(); 
 				?>" />
 			</div>

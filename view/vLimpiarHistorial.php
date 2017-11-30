@@ -1,16 +1,18 @@
 ﻿<?php 
 /* 
-* Vista Borrar.
-* Interface de borrado de departamento.
+* VISTA BORRAR.
+* INTERFACE DE BORRADO DE DEPARTAMENTO.
 * 
 * @author Patricia Martínez Lucena
 * @version 1.0.0
 */ 
+//INCLUIR LA CLASE BÚSQUEDA.
 require_once 'model/Busqueda.php';
 ?> 
 <div class="cabecera">
 	<h1>TRAYECTOS EN ESPAÑA</h1>
 	<?php
+		//SI SE HA INICIADO SESIÓN MUESTRA UNOS BOTONES. SI NO, MUESTRA OTROS.
 		if(isset($_SESSION['usuario'])){
 			print '<div class="botonesinicio"><a href="index.php?location=logoff"><input type="button" id="logoff" name="logoff" value="Cerrar Sesión"></a><a href="index.php?location=perfil"><input type="button" id="perfil" name="perfil" value="Ver Perfil"></a><a href="index.php?location=busqueda"><input type="button" id="busqueda" name="busqueda" value="Ver Historial"></a></div>';
 		}else{
@@ -24,6 +26,10 @@ require_once 'model/Busqueda.php';
 		<div class="datos">
 			<div class="titulo">
 				<h2>LIMPIAR HISTORIAL</h2>
+			</div>
+			<div id="contError">
+				<span id="error"></span>
+				<span id="errorcampos"></span>
 			</div>
 		</div>
 			<div class="botones">

@@ -6,9 +6,7 @@
  * @author PATRICIA MARTÍNEZ LUCENA
  * @version 1.0.0
  */
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-//Utiliza la clase Usuario
+//UTILIZA LA CLASE USUARIO
 require_once 'model/Usuario.php';
 //SI YA SE HA INICIADO LA SESIÓN DEL USUARIO REDIRIGE A LA PÁGINA DE INICIO.
 if (isset($_SESSION['usuario'])) {
@@ -35,7 +33,7 @@ if (isset($_SESSION['usuario'])) {
 			//INTRODUCIR VALORES EN LAS VARIABLES DE ERROR.
 			$error = "DATOS INCOMPLETOS"; 
 			$span="<span class='error' name='error'>".$error."</span>";
-		//ACCIÓN SI LOS CAMPOS ESTÁN ESCRITOS.
+		//SI LOS CAMPOS ESTÁN ESCRITOS.
 		}else { 
 			//COMPROBAR SI EXISTE EL USUARIO LLAMANDO A LA FUNCIÓN DE LA CLASE USUARIO Y ALMACENARLO EN LA VARIABLE.
 			$usuario=Usuario::validarUsuario($_POST['usuario'],hash('sha256', $_POST['password']));
@@ -69,5 +67,4 @@ include 'view/layout.php';
 		<p>Autor: Patricia Martínez</p>
 		<a href=""><div><img src="./webroot/css/images/github.png" width="50px"></div></a>
 	</footer> 
-
 </div>

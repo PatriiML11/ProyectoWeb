@@ -6,106 +6,117 @@
 * @author PATRICIA MARTÍNEZ LUCENA
 * @version 1.0.0
 */ 
+//SI SE HA INICIADO LA SESIÓN DEL USUARIO.
 if(isset($_SESSION['usuario'])){
-require_once 'model/Usuario.php';
-$_SESSION['editado']='';
-$_SESSION['usuarioModific']=$_SESSION['usuario'];
-//ALMACENAR EN VARIABLES LOS DISTINTOS VALORES RECIBIDOS. 
-$codUsuario=$_SESSION['usuarioModific']->getCodUsuario();
-$nomUsuario=$_SESSION['usuarioModific']->getNomUsuario();
-$email=$_SESSION['usuarioModific']->getEmail();
-//INICIALIZAR ENTRADA A FALSA.
-$entradaOK=false;
-$datosOK=false;
-$editado=false;
-//INICIALIZAR ARRAY DE ALMACENAMIENTO DE ERRORES.
-$errores=[
-	'codUsuario'=>'',
-	'nomUsuario'=>'',
-	'email'=>'',
-	'password'=>'',
-	'passwordnuevo'=>''
-];
-//INICIALIZAR ARRAY DE ALMACENAMIENTO DE LOS DATOS DE LOS CAMPOS DEL FORMULARIO.
-$campos=[
-	'codUsuario'=>'',
-	'nomUsuario'=>'',
-	'email'=>'',
-	'password'=>'',
-	'passwordnuevo'=>''
-];
-//ACCIÓN SI SE HA PULSADO EL BOTÓN.
-if(isset($_POST['editar'])){
-//NECESITA MI LIBRERÍA DE FUNCIONES.
-include 'core/funciones.php';
-	//INICIALIZAR LA ENTRADA A CORRECTA.
-	$entradaOK=true;
-	//OBTENER VALORES DE LOS CAMPOS.
-	$campos=[
-		'codUsuario'=>$_POST['codUsuario'],
-		'nomUsuario'=>$_POST['nomUsuario'],
-		'email'=>$_POST['email'],
-		'password'=>$_POST['password'],
-		'passwordnuevo'=>$_POST['passwordnuevo']
+	//INCLUIR LA CLASE BÚSQUEDA.
+	require_once 'model/Usuario.php';
+	$_SESSION['editado']='';
+	$_SESSION['usuarioModific']=$_SESSION['usuario'];
+	//ALMACENAR EN VARIABLES LOS DISTINTOS VALORES RECIBIDOS. 
+	$codUsuario=$_SESSION['usuarioModific']->getCodUsuario();
+	$nomUsuario=$_SESSION['usuarioModific']->getNomUsuario();
+	$email=$_SESSION['usuarioModific']->getEmail();
+	//INICIALIZAR ENTRADA A FALSA.
+	$entradaOK=false;
+	$datosOK=false;
+	$editado=false;
+	//INICIALIZAR ARRAY DE ALMACENAMIENTO DE ERRORES.
+	$errores=[
+		'codUsuario'=>'',
+		'nomUsuario'=>'',
+		'email'=>'',
+		'password'=>'',
+		'passwordnuevo'=>''
 	];
-	if($campos['nomUsuario']==$nomUsuario && empty(trim($campos['password'])) && empty(trim($campos['passwordnuevo'])) && $campos['codUsuario']==$codUsuario && $campos['email']==$email){
+	//INICIALIZAR ARRAY DE ALMACENAMIENTO DE LOS DATOS DE LOS CAMPOS DEL FORMULARIO.
+	$campos=[
+		'codUsuario'=>'',
+		'nomUsuario'=>'',
+		'email'=>'',
+		'password'=>'',
+		'passwordnuevo'=>''
+	];
+	//ACCIÓN SI SE HA PULSADO EL BOTÓN.
+	if(isset($_POST['editar'])){
+		//NECESITA MI LIBRERÍA DE FUNCIONES.
+		include 'core/funciones.php';
+		//INICIALIZAR LA ENTRADA A CORRECTA.
+		$entradaOK=true;
+		//OBTENER VALORES DE LOS CAMPOS.
+		$campos=[
+			'codUsuario'=>$_POST['codUsuario'],
+			'nomUsuario'=>$_POST['nomUsuario'],
+			'email'=>$_POST['email'],
+			'password'=>$_POST['password'],
+			'passwordnuevo'=>$_POST['passwordnuevo']
+		];
+		//SI NO SE HA CAMBIADO NINGÚN CAMPO, MUESTRA UN MENSAJE.
+		if($campos['nomUsuario']==$nomUsuario && empty(trim($campos['password'])) && empty(trim($campos['passwordnuevo'])) && $campos['codUsuario']==$codUsuario && $campos['email']==$email){
 			$entradaOK=false;
-			print 'No has cambiado nada';
-	}else{
-		//COMPRUEBA SI ES VÁLIDO EL TEXTO ESCRITO EN EL CAMPO DE CÓDIGO.
-		if(validartextonumero($campos['codUsuario'])){
-			$entradaOK=false;
-			//ALMACENA EN UN ARRAY EL ERROR RECIBIDO.
-			$errores['codUsuario']=validartextonumero($campos['codUsuario']);
-		}
-		if(!empty(trim($campos['nomUsuario']))){
-			//COMPRUEBA SI ES VÁLIDO EL TEXTO ESCRITO EN EL CAMPO DE DESCRIPCIÓN.
-			if(validartextovacio($campos['nomUsuario'])){
-				$entradaOK=false;
-				//ALMACENA EN UN ARRAY EL ERROR RECIBIDO.
-				$errores['nomUsuario']=validartextovacio($campos['nomUsuario']);
-			}
+			print '<span id="varError" style="display:none;">No has cambiado nada</span>';
 		}else{
-			$campos['nomUsuario']=$_SESSION['usuarioModific']->getNomUsuario();
-		}
-		if(!empty(trim($campos['email']))){
-			//COMPRUEBA SI ES VÁLIDO EL TEXTO ESCRITO EN EL CAMPO DE DESCRIPCIÓN.
-			if(validaremail($campos['email'])){
+			//COMPRUEBA SI ES VÁLIDO EL TEXTO ESCRITO EN EL CAMPO.
+			if(validartextonumero($campos['codUsuario'])){
 				$entradaOK=false;
 				//ALMACENA EN UN ARRAY EL ERROR RECIBIDO.
-				$errores['email']=validaremail($campos['email']);
+				$errores['codUsuario']=validartextonumero($campos['codUsuario']);
 			}
-		}else{
-			$campos['email']=$_SESSION['usuarioModific']->getEmail();
-		}
-		if(!empty(trim($campos['password']))){
-			if(validarpassword($campos['password'])){
+			//SI SE HA ESCRITO ALGO EN EL CAMPO.
+			if(!empty(trim($campos['nomUsuario']))){
+				//COMPRUEBA SI ES VÁLIDO EL TEXTO ESCRITO EN EL CAMPO.
+				if(validartextovacio($campos['nomUsuario'])){
+					$entradaOK=false;
+					//ALMACENA EN UN ARRAY EL ERROR RECIBIDO.
+					$errores['nomUsuario']=validartextovacio($campos['nomUsuario']);
+				}
+			}else{
+				//SI NO SE HA ESCRITO NADA, COGE EL VALOR ANTERIOR.
+				$campos['nomUsuario']=$_SESSION['usuarioModific']->getNomUsuario();
+			}
+			//SI SE HA ESCRITO ALGO EN EL CAMPO.
+			if(!empty(trim($campos['email']))){
+				//COMPRUEBA SI ES VÁLIDO EL TEXTO ESCRITO EN EL CAMPO.
+				if(validaremail($campos['email'])){
+					$entradaOK=false;
+					//ALMACENA EN UN ARRAY EL ERROR RECIBIDO.
+					$errores['email']=validaremail($campos['email']);
+				}
+			}else{
+				//SI NO SE HA ESCRITO NADA, COGE EL VALOR ANTERIOR.
+				$campos['email']=$_SESSION['usuarioModific']->getEmail();
+			}
+			//SI SE HA ESCRITO ALGO EN EL CAMPO.
+			if(!empty(trim($campos['password']))){
+				//COMPRUEBA SI ES VÁLIDO EL TEXTO ESCRITO EN EL CAMPO.
+				if(validarpassword($campos['password'])){
+					$entradaOK=false;
+					//ALMACENA EN UN ARRAY EL ERROR RECIBIDO.
+					$errores['password']=validarpassword($campos['password']);
+				}
+			}else{
+				//SI NO SE HA INTRODUCIDO LA CONTRASEÑA, MUESTRA UN MENSAJE DE ERROR.
 				$entradaOK=false;
-				//ALMACENA EN UN ARRAY EL ERROR RECIBIDO.
-				$errores['password']=validarpassword($campos['password']);
+				print '<span id="varError" style="display:none;">Debes introducir la contraseña</span>';
 			}
-		}else{
-			$entradaOK=false;
-			$errores['password']='Debes introducir la contraseña';
-		}
-		if(!empty(trim($campos['passwordnuevo']))){
-			if(validarpasswordvacio($campos['passwordnuevo'])){
-				$entradaOK=false;
-				//ALMACENA EN UN ARRAY EL ERROR RECIBIDO.
-				$errores['passwordnuevo']=validarpasswordvacio($campos['passwordnuevo']);
+			//SI SE HA ESCRITO ALGO EN EL CAMPO.
+			if(!empty(trim($campos['passwordnuevo']))){
+				//COMPRUEBA SI ES VÁLIDO EL TEXTO ESCRITO EN EL CAMPO.
+				if(validarpasswordvacio($campos['passwordnuevo'])){
+					$entradaOK=false;
+					//ALMACENA EN UN ARRAY EL ERROR RECIBIDO.
+					$errores['passwordnuevo']=validarpasswordvacio($campos['passwordnuevo']);
+				}
 			}
-		}
-	}	
-//COMPRUEBA SI ES VÁLIDO EL TEXTO ESCRITO EN EL CAMPO DE FECHA.
-}
-//SI SE PULSA EL BOTÓN LOGOFF REDIRIGE A LA PÁGINA D EINICIO.
-if(isset($_POST['logoff'])){
-	header('Location: index.php?location=inicio');
-}
-//INCLUIR LA VISTA GENERAL.
-include 'view/layout.php';
-//SI NO SE HA ENCONTRADO NINGÚN ERROR.
-if($entradaOK){
+		}	
+	}
+	//SI SE PULSA EL BOTÓN LOGOFF REDIRIGE A LA PÁGINA D EINICIO.
+	if(isset($_POST['logoff'])){
+		header('Location: index.php?location=inicio');
+	}
+	//INCLUIR LA VISTA GENERAL.
+	include 'view/layout.php';
+	//SI NO SE HA ENCONTRADO NINGÚN ERROR.
+	if($entradaOK){
 		//ALMACENA EN LA VARIABLE EL USUARIO RECIBIDO
 		$usuario=Usuario::validarUsuario($_SESSION['usuarioModific']->getCodUsuario(),hash('sha256',$campos['password']));
 		//SI HA DEVUELTO UN USUARIO, UTILIZAMOS EL MÉTODO editarUsuario de la clase Usuario.
@@ -117,29 +128,40 @@ if($entradaOK){
 			}
 			//SI SE HA EDITADO EL USUARIO.
 			if($usuario!=null){
-				$_SESSION['editado']="EDITADO CORRECTAMENTE";
+				print '<span id="varError" style="display:none;">Editado correctamente</span>';
+				$_SESSION['usuario']=$usuario;
 				$datosOK=true;
-			//SI NO SE HA EDITADO, ALMACENO EL ERROR EN UNA VARIABLE DE SESIÓN PARA MOSTRAR.
+			//SI NO SE HA EDITADO, MUESTRA EL ERROR.
 			}else{
-				$_SESSION['editado']="NO SE HA PODIDO MODIFICAR";
+				print '<span id="varError" style="display:none;">No se ha podido modificar</span>';
 			}
+		//SI NO HA DEVUELTO NINGÚN USUARIO, MUESTRA EL ERROR.
 		}else{
-			$_SESSION['editado']="La contraseña no coincide";
+			print '<span id="varError" style="display:none;">La contraseña no es correcta</span>';
 		}
-	print_r($_SESSION['editado']);
-	//SI SE HA EDITADO REDIRIGE A LA PÁGINA DE EDITAR USUARIO.
-	if($datosOK){
-		header('Refresh: 0.5; url=index.php?location=editarusuario');
+		//SI SE HA EDITADO REDIRIGE A LA PÁGINA DE EDITAR USUARIO.
+		if($datosOK){
+			header('Location:index.php?location=editarusuario');
+		}
 	}
-}
+//SI NO SE HA INICIADO SESIÓN REDIRIGE A LA PÁGINA DE INICIO.
 }else{
 	header('Location:index.php?location=inicio');
 }
 ?>
+<script>
+//SI EXISTEN ERRORES, LOS MUESTRA.
+if(document.getElementById("varError").innerHTML.length!=0){
+	document.getElementById("error").innerHTML=document.getElementById("varError").innerHTML;
+}
+if(document.getElementById("error").innerHTML.length!=0 || document.getElementById("errorcampos").innerHTML.length!=0){
+	document.getElementById("div1").style.marginTop="10px";
+	document.getElementById("contError").style.display="flex";
+}
+</script>
 </div>
 	<footer>           
 		<p>Autor: Patricia Martínez</p>
 		<a href=""><div><img src="./webroot/css/images/github.png" width="50px"></div></a>
 	</footer> 
-
 </div>
