@@ -149,7 +149,7 @@ if(isset($_SESSION['usuario'])){
 	header('Location:index.php?location=inicio');
 }
 ?>
-<script>
+<script>/*
 //SI EXISTEN ERRORES, LOS MUESTRA.
 if(document.getElementById("varError").innerHTML.length!=0){
 	document.getElementById("error").innerHTML=document.getElementById("varError").innerHTML;
@@ -158,10 +158,23 @@ if(document.getElementById("error").innerHTML.length!=0 || document.getElementBy
 	document.getElementById("div1").style.marginTop="10px";
 	document.getElementById("contError").style.display="flex";
 }
+*/
+$(document).ready(function(){
+	var varerror=$("#varError").html();
+	if($("#varError").html().length!=0){
+		$("#error").text(varerror);
+	}
+	//SI EXISTEN ERRORES, LOS MUESTRA.
+	if($("#error").html().length!=0 || $("#errorcampos").html().length!=0){
+		$("#div1").css("marginTop","10px");
+		$("#contError").css("display","flex");
+	}
+});
+
 </script>
 </div>
 	<footer>           
 		<p>Autor: Patricia Martínez</p>
-		<a href=""><div><img src="./webroot/css/images/github.png" width="50px"></div></a>
+		<a href="https://github.com/PatriiML11/ProyectoWeb/tree/ProyectoWeb-Version3"><div><img src="./webroot/css/images/github.png" width="50px"></div></a>
 	</footer> 
 </div>

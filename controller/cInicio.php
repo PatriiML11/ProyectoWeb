@@ -109,7 +109,7 @@ if($entradaOK){
 			</script>	
 			<?php
 		}elseif(!strpos($gmArray['destination_addresses'][0],"Spain") || !strpos($gmArray['origin_addresses'][0],"Spain")){
-			print '<span id="varError" style="display:none;">El trayecto solo se realiza en España</span>';
+			print '<span id="varError" style="display:none;">Trayecto no válido</span>';
 			?>
 			<script>
 				sessionStorage.setItem("salida","");
@@ -164,11 +164,21 @@ if($entradaOK){
 			//CONVERTIR EN ARRAY LAS DIRECCIONES.
 			$postalsalida = explode(',',$gmArray['origin_addresses'][0]); 
 			$postalllegada = explode(',',$gmArray['destination_addresses'][0]); 
-			//EXTRAER EL CÓDIGO POSTAL EN BASE 10.
-			$codpostal = intval(preg_replace('/[^0-9]+/', '', $postalllegada[1]), 10); 
-			if($codpostal == "" || $codpostal == 0){
-				$codpostal = intval(preg_replace('/[^0-9]+/', '', $postalllegada[0]), 10);
+			print_r($postalllegada);
+			
+			//EXTRAER EL CÓDIGO POSTAL.
+			$codpostal = preg_replace('/[^0-9]+/', '', $postalllegada[0]); 
+			print $codpostal;
+			if($codpostal == "" || $codpostal == 0 || strlen($codpostal)!=5){
+				$codpostal = preg_replace('/[^0-9]+/', '', $postalllegada[1]);
+				print "<br/>".$codpostal;
+				if($codpostal == "" || $codpostal == 0 || strlen($codpostal)!=5){
+					//UTILIZO EL OPERADOR DE CONTROL DE ERRORES POR SI NO EXISTE EL ÍNDICE 2.
+					$codpostal = @preg_replace('/[^0-9]+/', '', $postalllegada[2]);
+					print "<br/>".$codpostal;
+				}
 			}
+			print "<br/> Codigo Postal ".$codpostal;
 			//SI EL CAMPO DE LUGAR DE LLEGADA TIENE CÓDIGO POSTAL, LA API DEL TIEMPO COGERÁ LOS DATOS DEL CÓDIGO POSTAL.
 			if($codpostal != "" || $codpostal != 0){
 				//URL DE LA API REST DE LA PÁGINA DEL TIEMPO WEATHERBIT.IO UTILIZANDO EL CÓDIGO POSTAL.
@@ -322,10 +332,18 @@ if(isset($_POST['regiro'])){
 ?>
 <script>
 	//SI EXISTEN ERRORES, LOS MUESTRA.
-	if(document.getElementById("error").innerHTML.length!=0 || document.getElementById("errorcampos").innerHTML.length!=0){
+	/*if(document.getElementById("error").innerHTML.length!=0 || document.getElementById("errorcampos").innerHTML.length!=0){
 		document.getElementById("div1").style.marginTop="10px";
 		document.getElementById("contError").style.display="flex";
-	}
+	}*/
+	$(document).ready(function(){
+		console.log($("#error").html());
+		//SI EXISTEN ERRORES, LOS MUESTRA.
+		if($("#error").html().length!=0 || $("#errorcampos").html().length!=0){
+			$("#div1").css("marginTop","10px");
+			$("#contError").css("display","flex");
+		}
+	});
 	//DEFINIR VARIABLES.
 	var map;
 	var marker;
@@ -344,24 +362,27 @@ if(isset($_POST['regiro'])){
 	//DEFINIR VARIABLES PARA CREAR WAYPOINTS EN EL MAPA.
 	var directionsDisplay=new google.maps.DirectionsRenderer();
 	var directionsService = new google.maps.DirectionsService();
-	//SI EL TAMAÑO DE LA VENTANA DEL NAVEGADOR O DISPOSITIVO ES MAYOR, SE MOSTRARÁ UN MAPA CON MÁS ZOOM
-	if (window.outerWidth>1000 || screen.width>1000){
-		//DEFINIR EL MAPA EN EL DIV CON ID=MAP, CON ZOOM 6 Y CENTRADO EN ESPAÑA.
-		var map = new google.maps.Map(document.getElementById('map'), {
-		  zoom: 6,
-		  center: {lat:39.6693985 , lng:-4.0645625 }
-		});
-		directionsDisplay.setMap(map);
+	function mapa(){
+		//SI EL TAMAÑO DE LA VENTANA DEL NAVEGADOR O DISPOSITIVO ES MAYOR, SE MOSTRARÁ UN MAPA CON MÁS ZOOM
+		if (window.outerWidth>1000 || screen.width>1000){
+			//DEFINIR EL MAPA EN EL DIV CON ID=MAP, CON ZOOM 6 Y CENTRADO EN ESPAÑA.
+			var map = new google.maps.Map(document.getElementById('map'), {
+			  zoom: 6,
+			  center: {lat:39.6693985 , lng:-4.0645625 }
+			});
+			directionsDisplay.setMap(map);
+		}
+		//SI EL TAMAÑO DE LA VENTANA DEL NAVEGADOR O DISPOSITIVO ES MENOR, SE MOSTRARÁ UN MAPA CON MENOS ZOOM
+		if (window.outerWidth<=1000 || screen.width<=1000){
+			//DEFINIR EL MAPA EN EL DIV CON ID=MAP, CON ZOOM 5 Y CENTRADO EN ESPAÑA.
+			var map2 = new google.maps.Map(document.getElementById('map'), {
+			  zoom: 5,
+			  center: {lat: 39.6693985, lng: -4.0645625}
+			});
+			directionsDisplay.setMap(map2);
+		}
 	}
-	//SI EL TAMAÑO DE LA VENTANA DEL NAVEGADOR O DISPOSITIVO ES MENOR, SE MOSTRARÁ UN MAPA CON MENOS ZOOM
-	if (window.outerWidth<=1000 || screen.width<=1000){
-		//DEFINIR EL MAPA EN EL DIV CON ID=MAP, CON ZOOM 5 Y CENTRADO EN ESPAÑA.
-		var map2 = new google.maps.Map(document.getElementById('map'), {
-		  zoom: 5,
-		  center: {lat: 39.6693985, lng: -4.0645625}
-		});
-		directionsDisplay.setMap(map2);
-	}
+	mapa();
 	mostrarerrores();
 	//FUNCIÓN PARA CALCULAR EL WAYPOINT CON LOS DATOS ALMACENADOS.
 	function calculaRuta(){
@@ -404,6 +425,6 @@ if(isset($_POST['regiro'])){
 </div>
 	<footer>           
 		<p>Autor: Patricia Martínez</p>
-		<a href=""><div><img src="./webroot/css/images/github.png" width="50px"></div></a>
+		<a href="https://github.com/PatriiML11/ProyectoWeb/tree/ProyectoWeb-Version3"><div><img src="./webroot/css/images/github.png" width="50px"></div></a>
 	</footer> 
 </div>

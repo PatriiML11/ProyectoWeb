@@ -18,3 +18,16 @@ if(isset($_SESSION['usuario'])){
 }
 
 ?>
+<script>
+$(document).ready(function(){
+	var varerror=$("#varError").html();
+	if($("#varError").html().length!=0){
+		$("#error").text(varerror);
+	}
+	//SI EXISTEN ERRORES, LOS MUESTRA.
+	if($("#error").html().length!=0 || $("#errorcampos").html().length!=0){
+		$("#div1").css("marginTop","10px");
+		$("#contError").css("display","flex");
+	}
+});
+</script>

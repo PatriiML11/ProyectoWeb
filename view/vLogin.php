@@ -17,8 +17,8 @@ require_once 'model/Usuario.php';
 				<h2>INICIAR SESIÓN</h2>
 			</div>
 			<div id="contError">
-				<span class="error"><?php if(!empty($_SESSION['error'])){print $_SESSION['error'];} ?></span>
-				<span class="errorcampos"></span>
+				<span id="error"></span>
+				<span id="errorcampos"></span>
 			</div> 
 			<div id="div1">
 				<label for='usuario' >Usuario</label><br/> 
