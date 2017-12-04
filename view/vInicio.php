@@ -40,24 +40,27 @@
 	var directionsDisplay;
 	var directionsDisplay=new google.maps.DirectionsRenderer();
 	var directionsService = new google.maps.DirectionsService();
-	//SI EL TAMAÑO DE LA VENTANA DEL NAVEGADOR O DISPOSITIVO ES MAYOR, SE MOSTRARÁ UN MAPA CON MÁS ZOOM
-	if (window.outerWidth>1000 || screen.width>1000){
-		//DEFINIR EL MAPA EN EL DIV CON ID=MAP, CON ZOOM 6 Y CENTRADO EN ESPAÑA.
-		var map = new google.maps.Map(document.getElementById('map'), {
-		  zoom: 6,
-		  center: {lat:39.6693985 , lng:-4.0645625 }
-		});
-		directionsDisplay.setMap(map);
+	function mapa(){
+		//SI EL TAMAÑO DE LA VENTANA DEL NAVEGADOR O DISPOSITIVO ES MAYOR, SE MOSTRARÁ UN MAPA CON MÁS ZOOM
+		if (window.outerWidth>1000 || screen.width>1000){
+			//DEFINIR EL MAPA EN EL DIV CON ID=MAP, CON ZOOM 6 Y CENTRADO EN ESPAÑA.
+			var map = new google.maps.Map(document.getElementById('map'), {
+			  zoom: 6,
+			  center: {lat:39.6693985 , lng:-4.0645625 }
+			});
+			directionsDisplay.setMap(map);
+		}
+		//SI EL TAMAÑO DE LA VENTANA DEL NAVEGADOR O DISPOSITIVO ES MENOR, SE MOSTRARÁ UN MAPA CON MENOS ZOOM
+		if (window.outerWidth<=1000 || screen.width<=1000){
+			//DEFINIR EL MAPA EN EL DIV CON ID=MAP, CON ZOOM 5 Y CENTRADO EN ESPAÑA.
+			var map2 = new google.maps.Map(document.getElementById('map'), {
+			  zoom: 5,
+			  center: {lat: 39.6693985, lng: -4.0645625}
+			});
+			directionsDisplay.setMap(map2);
+		}
 	}
-	//SI EL TAMAÑO DE LA VENTANA DEL NAVEGADOR O DISPOSITIVO ES MENOR, SE MOSTRARÁ UN MAPA CON MENOS ZOOM
-	if (window.outerWidth<=1000 || screen.width<=1000){
-		//DEFINIR EL MAPA EN EL DIV CON ID=MAP, CON ZOOM 5 Y CENTRADO EN ESPAÑA.
-		var map2 = new google.maps.Map(document.getElementById('map'), {
-		  zoom: 5,
-		  center: {lat: 39.6693985, lng: -4.0645625}
-		});
-		directionsDisplay.setMap(map2);
-	}
+	mapa();
 </script>
 <div class="cabecera">
 	<h1>TRAYECTOS EN ESPAÑA</h1>

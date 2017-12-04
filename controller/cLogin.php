@@ -31,8 +31,8 @@ if (isset($_SESSION['usuario'])) {
 			//LA ENTRADA SERÁ FALSA.
 			$entradaOK=false;
 			//INTRODUCIR VALORES EN LAS VARIABLES DE ERROR.
-			$error = "DATOS INCOMPLETOS"; 
-			$span="<span class='error' name='error'>".$error."</span>";
+			print '<span id="varError" style="display:none;">DATOS INCOMPLETOS</span>';
+
 		//SI LOS CAMPOS ESTÁN ESCRITOS.
 		}else { 
 			//COMPROBAR SI EXISTE EL USUARIO LLAMANDO A LA FUNCIÓN DE LA CLASE USUARIO Y ALMACENARLO EN LA VARIABLE.
@@ -42,8 +42,7 @@ if (isset($_SESSION['usuario'])) {
 				//LA ENTRADA SERÁ FALSA.
 				$entradaOK=false;
 				//INTRODUCIR VALORES EN LAS VARIABLES DE ERROR.
-				$error = "Debes introducir un nombre de usuario y una contraseña válidos";
-				$span="<span class='error' name='error'>".$error."</span>";
+				print '<span id="varError" style="display:none;">Debes introducir un nombre de usuario y una contraseña válidos</span>';
 			}
 		}
 	}
@@ -57,14 +56,28 @@ if (isset($_SESSION['usuario'])) {
 		header('Location: index.php?location=inicio');
 	}
 	//EL ERROR LANZADO SERÁ UN CAMPO EN BLANCO O UN ERROR, SI LO HA ENCONTRADO.
-	$_SESSION['error']=$span;
+	//$_SESSION['error']=$span;
 }
 //INCLUIR LA VISTA GENERAL.
 include 'view/layout.php';
 ?>
+<script>
+$(document).ready(function(){
+	var varerror=$("#varError").html();
+	if($("#varError").html().length!=0){
+		$("#error").text(varerror);
+	}
+	//SI EXISTEN ERRORES, LOS MUESTRA.
+	if($("#error").html().length!=0 || $("#errorcampos").html().length!=0){
+		$("#div1").css("marginTop","10px");
+		$("#contError").css("display","flex");
+	}
+});
+</script>
+
 </div>
 	<footer>           
 		<p>Autor: Patricia Martínez</p>
-		<a href=""><div><img src="./webroot/css/images/github.png" width="50px"></div></a>
+		<a href="https://github.com/PatriiML11/ProyectoWeb/tree/ProyectoWeb-Version3"><div><img src="./webroot/css/images/github.png" width="50px"></div></a>
 	</footer> 
 </div>

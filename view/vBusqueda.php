@@ -33,6 +33,10 @@ if($cuenta!=0){
 <div class="botonesinicio">
 	
 </div>
+<div id="contError">
+	<span id="error"></span>
+	<span id="errorcampos"></span>
+</div>
 <br/>
 <?php
 $fraseimg="";
@@ -163,9 +167,19 @@ if(!empty($_SESSION['lista'])){
 //SI NO HAY DATOS, MUESTRA UN MENSAJE.
 }else{
 	print '<span id="varError" style="display:none;">HISTORIAL VACÍO</span>';
+	?>
+	<script>
+		document.getElementById("error").innerHTML=document.getElementById("varError").innerHTML;
+		if(document.getElementById("error").innerHTML.length!=0 || document.getElementById("errorcampos").innerHTML.length!=0){
+			document.getElementById("contError").style.display="flex";
+			document.getElementById("error").innerHTML=document.getElementById("varError").innerHTML;
+		}
+	</script>
+	<?php
 }
 ?>
 </form>
+
 <!--
 </div>
 	<footer id="piehistorial">           

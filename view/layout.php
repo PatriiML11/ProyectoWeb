@@ -12,6 +12,7 @@
 <meta name="viewport" content="initial-scale=1.0">
 <meta charset="UTF-8">
 <link rel="stylesheet" type="text/css" href="./webroot/css/styles.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <title>PROYECTO</title>
 </head>
 <body>  
