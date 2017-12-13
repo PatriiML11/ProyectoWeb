@@ -36,6 +36,6 @@ if(isset($_SESSION['usuario'])){
 </div>
 	<footer>           
 		<p>Autor: Patricia Martínez</p>
-		<a href="https://github.com/PatriiML11/ProyectoWeb/tree/ProyectoWeb-Version3"><div><img src="./webroot/css/images/github.png" width="50px"></div></a>
+		<a href="https://github.com/PatriiML11/ProyectoWeb/tree/ProyectoWeb-VersionFinal" target="_blank"><div><img src="./webroot/css/images/github.png" width="50px"></div></a>
 	</footer> 
 </div>
