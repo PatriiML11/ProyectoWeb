@@ -378,7 +378,9 @@ if(isset($_POST['regiro'])){
 		}
 	}
 	mapa();
-	mostrarerrores();
+	if(errorcampos!==null){
+		mostrarerrores();
+	}
 	//FUNCIÓN PARA CALCULAR EL WAYPOINT CON LOS DATOS ALMACENADOS.
 	function calculaRuta(){
 		//ALMACENAR LOS PARÁMETROS QUE NECESITA PARA CALCULAR LA RUTA.

@@ -162,7 +162,7 @@ if(document.getElementById("error").innerHTML.length!=0 || document.getElementBy
 $(document).ready(function(){
 	//RECOGER EL ERROR CAPTURADO CON PHP.
 	var varerror=$("#varError").html();
-	if($("#varError").html().length!=0){
+	if(jQuery.type($("#varError").html())!=='undefined' && $("#varError").html().length!=0){
 		$("#error").text(varerror);
 	}
 	//SI EXISTEN ERRORES, LOS MUESTRA.
