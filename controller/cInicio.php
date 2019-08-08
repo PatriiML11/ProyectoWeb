@@ -332,12 +332,7 @@ if(isset($_POST['regiro'])){
 ?>
 <script>
 	//SI EXISTEN ERRORES, LOS MUESTRA.
-	/*if(document.getElementById("error").innerHTML.length!=0 || document.getElementById("errorcampos").innerHTML.length!=0){
-		document.getElementById("div1").style.marginTop="10px";
-		document.getElementById("contError").style.display="flex";
-	}*/
 	$(document).ready(function(){
-		console.log($("#error").html());
 		//SI EXISTEN ERRORES, LOS MUESTRA.
 		if($("#error").html().length!=0 || $("#errorcampos").html().length!=0){
 			$("#div1").css("marginTop","10px");
@@ -383,7 +378,9 @@ if(isset($_POST['regiro'])){
 		}
 	}
 	mapa();
-	mostrarerrores();
+	if(errorcampos!==null){
+		mostrarerrores();
+	}
 	//FUNCIÓN PARA CALCULAR EL WAYPOINT CON LOS DATOS ALMACENADOS.
 	function calculaRuta(){
 		//ALMACENAR LOS PARÁMETROS QUE NECESITA PARA CALCULAR LA RUTA.
@@ -425,6 +422,6 @@ if(isset($_POST['regiro'])){
 </div>
 	<footer>           
 		<p>Autor: Patricia Martínez</p>
-		<a href="https://github.com/PatriiML11/ProyectoWeb/tree/ProyectoWeb-Version3"><div><img src="./webroot/css/images/github.png" width="50px"></div></a>
+		<a href="https://github.com/PatriiML11/ProyectoWeb/tree/ProyectoWeb-VersionFinal" target="_blank"><div><img src="./webroot/css/images/github.png" width="50px"></div></a>
 	</footer> 
 </div>

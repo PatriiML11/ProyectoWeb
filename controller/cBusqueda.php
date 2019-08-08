@@ -20,8 +20,9 @@ if(isset($_SESSION['usuario'])){
 ?>
 <script>
 $(document).ready(function(){
+	//RECOGER EL ERROR CAPTURADO CON PHP.
 	var varerror=$("#varError").html();
-	if($("#varError").html().length!=0){
+	if(jQuery.type($("#varError").html())!=='undefined' && $("#varError").html().length!=0){
 		$("#error").text(varerror);
 	}
 	//SI EXISTEN ERRORES, LOS MUESTRA.
