@@ -28,27 +28,28 @@ require_once 'model/Busqueda.php';
 		//RECOGER EN UN ARRAY LOS VALORES DE LOS CAMPOS DEL FORMULARIO.
 		$campos['salida']=$_POST['salida'];
 		$campos['llegada']=$_POST['llegada'];
+		
 		//INCLUIR LA LIBRERÍA DE FUNCIONES
 		include "core/funciones.php";
-		if(validartexto($campos['salida'])){
+		if(validartextocoma($campos['salida'])){
 			$entradaOK=false;
 			//ALMACENAR EN EL ARRAY EL ERROR RECIBIDO.
-			$errores['salida']=validartexto($campos['salida']);
+			$errores['salida']=validartextocoma($campos['salida']);
 			$campos['salida']="";
 		}
-		if(validartexto($campos['llegada'])){
+		if(validartextocoma($campos['llegada'])){
 			$entradaOK=false;
 			//ALMACENAR EN EL ARRAY EL ERROR RECIBIDO.
-			$errores['llegada']=validartexto($campos['llegada']);
+			$errores['llegada']=validartextocoma($campos['llegada']);
 			$campos['llegada']="";
 		}
 	}
 	if($entradaOK){
 		//URL DEL SERVICIO REST DE LA API DE GOOGLE (DISTANCIA Y DURACIÓN).
 		if(isset($_POST['autopista'])){
-			$gmUrl="https://maps.googleapis.com/maps/api/distancematrix/json?region=es?units=imperial&avoid=tolls&origins=".urlencode($campos['salida']).urlencode(',españa')."&destinations=".urlencode($campos['llegada']).urlencode(',españa')."&key=AIzaSyBOTmJGCrDskI_CD6DePfvmP-SCsKLRRT0";
+			$gmUrl="https://maps.googleapis.com/maps/api/distancematrix/json?region=es?country=spain?language=es?units=imperial&avoid=tolls&origins=".urlencode($campos['salida']).urlencode(", españa")."&destinations=".urlencode($campos['llegada']).urlencode(", españa")."&key=AIzaSyBOTmJGCrDskI_CD6DePfvmP-SCsKLRRT0";
 		}else{
-			$gmUrl="https://maps.googleapis.com/maps/api/distancematrix/json?region=es?units=imperial&origins=".urlencode($campos['salida']).urlencode(',españa')."&destinations=".urlencode($campos['llegada']).urlencode(',españa')."&key=AIzaSyBOTmJGCrDskI_CD6DePfvmP-SCsKLRRT0";
+			$gmUrl="https://maps.googleapis.com/maps/api/distancematrix/json?region=es?country=spain?language=es?units=imperial&origins=".urlencode($campos['salida']).urlencode(", españa")."&destinations=".urlencode($campos['llegada']).urlencode(", españa")."&key=AIzaSyBOTmJGCrDskI_CD6DePfvmP-SCsKLRRT0";
 		}
 		//ARCHIVO JSON QUE RECIBE LA URL.
 		$gmJson = @file_get_contents($gmUrl);
@@ -57,11 +58,11 @@ require_once 'model/Busqueda.php';
 		}else{
 			//ARRAY QUE DEVUELVE EL JSON DE LA API.
 		$gmArray=json_decode($gmJson,true);
-		print "<pre>";
-		print_r($gmArray);
-		print "</pre>";
+		//print "<pre>";
+		//print_r($gmArray);
+		//print "</pre>";
 		//CONTROLES DE ERRORES.
-		if(strpos($gmArray['destination_addresses'][0],"Balearic Islands") || strpos($gmArray['destination_addresses'][0],"Canary Islands") || strpos($gmArray['destination_addresses'][0],"Las Palmas")){
+		if(strpos($gmArray['destination_addresses'][0],"Balear")!==false || strpos($gmArray['destination_addresses'][0],"Canary Islands")!==false || strpos($gmArray['destination_addresses'][0],"Las Palmas")!==false|| strpos($gmArray['destination_addresses'][0],"Tenerife")!==false){
 			print "SOLO TRAYECTO EN COCHE";
 			?>
 			<script>
@@ -101,6 +102,8 @@ require_once 'model/Busqueda.php';
 				sessionStorage.setItem("llegada","");
 			</script>	
 			<?php
+		}elseif(!strpos($gmArray['destination_addresses'][0],"Spain") || !strpos($gmArray['origin_addresses'][0],"Spain")){
+			print "SOLO EN ESPAÑA";
 		}else{
 			//Almacenar valores para que JavaScript los interprete.
 			$salida=$gmArray['origin_addresses'][0];
@@ -137,8 +140,25 @@ require_once 'model/Busqueda.php';
 					$trayecto=0;
 				}
 			}
-			//URL DE LA API REST DE LA PÁGINA DEL TIEMPO WEATHERBIT.IO
-			$tiempoUrl='https://api.weatherbit.io/v2.0/forecast/hourly?city='.urlencode($campos['llegada']).'&lang=es&key=9d1b4156f1cb4c7295d5d203d68969d9';
+			if($gmArray['destination_addresses'][0] == $gmArray['origin_addresses'][0]){
+				$distancia='0';
+				$duracion='0';
+			}
+			$postalsalida = explode(',',$gmArray['origin_addresses'][0]); 
+			$postalllegada = explode(',',$gmArray['destination_addresses'][0]); 
+
+			$codpostal = intval(preg_replace('/[^0-9]+/', '', $postalllegada[1]), 10); 
+			
+			//SI EL CAMPO DE LUGAR DE LLEGADA TIENE CÓDIGO POSTAL, LA API DEL TIEMPO COGERÁ LOS DATOS DEL CÓDIGO POSTAL.
+			if($codpostal != ""){
+				print $codpostal;
+				//URL DE LA API REST DE LA PÁGINA DEL TIEMPO WEATHERBIT.IO
+				$tiempoUrl='https://api.weatherbit.io/v2.0/forecast/hourly?postal_code='.$codpostal.'&lang=es&key=9d1b4156f1cb4c7295d5d203d68969d9';
+			//SI NO HAY CODIGO POSTAL, LA API DEL TIEMPO COGERÁ LOS DATOS DEL LUGAR DE LLEGADA.
+			}else{
+				//URL DE LA API REST DE LA PÁGINA DEL TIEMPO WEATHERBIT.IO
+				$tiempoUrl='https://api.weatherbit.io/v2.0/forecast/hourly?city='.urlencode($campos['llegada']).'&lang=es&key=9d1b4156f1cb4c7295d5d203d68969d9';
+			}
 			//FORMATO JSON QUE DEVUELVE LA URL.
 			$tiempoJson = @file_get_contents($tiempoUrl);
 			if ($tiempoJson === false) {
@@ -174,7 +194,6 @@ require_once 'model/Busqueda.php';
 				//print $tiempoArray['data'][$horaarray]['weather']['description'];
 				//print "</pre>";
 				//OBTENER LOS VALORES DEL ARRAY DEL SERVICIO REST.
-				
 				$temperatura=$tiempoArray['data'][$horaarray]['temp']." ºC";
 				$viento=$tiempoArray['data'][$horaarray]['wind_spd']." m/s";
 				$humedad=$tiempoArray['data'][$horaarray]['rh']." %";

@@ -11,7 +11,7 @@
 			return true;  
 		}
 	}
-	var patron=/^[a-zA-ZàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇ\s]+$/;
+	var patron=/^[a-zA-ZàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇ\s,\/]+$/;
 	function validacionsalida(){  
 		var camposalida = document.getElementById("desde");  
 		//SI EL CAMPO ESTÁ VACÍO  
