@@ -1,7 +1,7 @@
 ﻿<?php
 /*
- * Página que almacena los controladores y las vistas.
- * Array que contiene las rutas de las páginas.
+ * PÁGINA QUE ALMACENA LOS CONTROLADORES Y LAS VISTAS.
+ * ARRAY QUE CONTIENE LAS RUTAS DE LAS PÁGINAS.
  *
  * @author Patricia Martínez Lucena
  * @version 1.0.0

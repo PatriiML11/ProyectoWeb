@@ -7,7 +7,7 @@
 * @version 1.0.0 
 */ 
 //INCLUIR LA CLASE USUARIO
- require_once 'model/Usuario.php';
+require_once 'model/Usuario.php';
 //INICIALIZAR LAS VARIABLES.
 $entradaOK=false;
 //INICIALIZAR EL ARRAY DE ALMACENAMIENTO DE ERRORES.
@@ -65,6 +65,7 @@ include 'core/funciones.php';
 if(isset($_POST['volver'])){
 	header('Location: index.php?location=inicio');
 }
+//INCLUIR LA VISTA GENERAL.
 include 'view/layout.php';
 //SI NO SE HA ENCONTRADO NINGÚN ERROR INTENTA BUSCAR EL USUARIO.
 if($entradaOK){
@@ -75,6 +76,7 @@ if($entradaOK){
 		$creado=Usuario::crearUsuario($campos['codUsuario'],$campos['nomUsuario'],$campos['email'],hash('sha256',$campos['password']));
 		//ACCIÓN SI NO HA DEVUELTO NINGÚN USUARIO.
 		if($creado){
+			print '<span id="varError" style="display:none;">USUARIO CREADO CORRECTAMENTE</span>';
 			//ALMACENAR EN LA SESIÓN EL MENSAJE QUE SE VA A MOSTRAR.
 			$_SESSION['creado']="USUARIO CREADO CORRECTAMENTE";
 			//ALMACENAR EN UNA VARIABLE EL USUARIO CREADO.
@@ -84,18 +86,29 @@ if($entradaOK){
 			//REDIRIGIR A LA PÁGINA DE INICIO CON UNA ESPERA DE 2 SEGUNDOS.
 			header("Location:index.php?location=inicio");
 		}else{
+			print '<span id="varError" style="display:none;">NO SE HA PODIDO CREAR</span>';
 			//ALMACENAR EN LA SESIÓN EL MENSAJE QUE SE VA A MOSTRAR.
 			$_SESSION['creado']="NO SE HA PODIDO CREAR";
-		}	
+		}
+	//SI EXISTE EL USUARIO MUESTRA UN MENSAJE.
 	}else{
-		print "El Usuario ya existe.";
+		print '<span id="varError" style="display:none;">EL USUARIO YA EXISTE</span>';
 	}
 }
 ?>
+<script>
+//SI EXISTEN ERRORES, LOS MUESTRA.
+if(document.getElementById("varError").innerHTML.length!=0){
+	document.getElementById("error").innerHTML=document.getElementById("varError").innerHTML;
+}
+if(document.getElementById("error").innerHTML.length!=0 || document.getElementById("errorcampos").innerHTML.length!=0){
+	document.getElementById("div1").style.marginTop="10px";
+	document.getElementById("contError").style.display="flex";
+}
+</script>
 </div>
 	<footer>           
 		<p>Autor: Patricia Martínez</p>
 		<a href=""><div><img src="./webroot/css/images/github.png" width="50px"></div></a>
 	</footer> 
-
 </div>

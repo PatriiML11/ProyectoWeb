@@ -1,14 +1,11 @@
 ﻿<?php
-
 /*
- * Vista de la ventana de registro de usuario.
+ * VISTA DE LA VENTANA DE REGISTRO DE USUARIO.
  *
  * @author Patricia Martínez Lucena
  * @version 1.0.0
  */
-
-
-//Utiliza la clase Usuario.
+//UTILIZA LA CLASE USUARIO.
 require_once 'model/Usuario.php';
 ?>
 <div class="cabecera">
@@ -20,7 +17,11 @@ require_once 'model/Usuario.php';
 			<div class="titulo">
 				<h2>CREAR USUARIO</h2>
 			</div>
-			<div>
+			<div id="contError">
+				<span id="error"></span>
+				<span id="errorcampos"></span>
+			</div>
+			<div id="div1">
 				<span class="error"><?php if(!empty($errores['codUsuario'])){echo $errores['codUsuario'];} ?></span>
 				<p>Usuario <br/><input type="text" name="codUsuario" />
 			</div>

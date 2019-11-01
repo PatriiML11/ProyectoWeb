@@ -5,13 +5,17 @@
  * @author Patricia Martínez Lucena
  * @version 1.0.0
  */
-	require_once 'model/Usuario.php';
-	$codUsuario=$_SESSION['usuario']->getCodUsuario();
-	$_SESSION['usulista']=Usuario::buscarUsuario($codUsuario);
+ //INCLUIR LA CLASE USUARIO.
+require_once 'model/Usuario.php';
+//ALMACENAR EL CÓDIGO DEL USUARIO.
+$codUsuario=$_SESSION['usuario']->getCodUsuario();
+//ALMACENAR EN LA SESIÓN EL USUARIO.
+$_SESSION['usulista']=Usuario::buscarUsuario($codUsuario);
 ?>
 <div class="cabecera">
 	<h1>TRAYECTOS EN ESPAÑA</h1>
 	<?php
+		//SI SE HA INICIADO SESIÓN MUESTRA LOS BOTONES.
 		if(isset($_SESSION['usuario'])){
 			print '<div class="botonesinicio"><a href="index.php?location=logoff"><input type="button" id="logoff" name="logoff" value="Cerrar Sesión"></a><a href="index.php?location=busqueda"><input type="button" id="busqueda" name="busqueda" value="Ver Historial"></a><a href="index.php?location=inicio"> <input type="button" name="volver" value="Volver"/></a></div>';
 		}
